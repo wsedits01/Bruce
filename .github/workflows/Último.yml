@@ -18,11 +18,15 @@ jobs:
       - name: Criar Backup do rf.cpp
         run: cp src/modules/rf/rf.cpp rf_backup.cpp
 
-      - name: Baixar Últimas Atualizações do Bruce Original
-        run: |
-          git remote add upstream https://github.com/BRUCE-ORIGINAL/REPO.git
-          git fetch upstream
-          git reset --hard upstream/main --allow-unrelated-histories
+      - name: Adicionar repositório original como upstream
+  run: |
+    git remote add upstream https://github.com/brucecoredev/Bruce.git
+    git fetch upstream
+
+     - name: Fazer merge das atualizações do repositório original
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: git pull --rebase https://x-access-token:${GITHUB_TOKEN}@github.com/brucecoredev/Bruce.git main
 
       - name: Restaurar rf.cpp do Fork
         run: mv rf_backup.cpp src/modules/rf/rf.cpp
@@ -38,10 +42,12 @@ jobs:
           mkdir -p teste
           find .pio/build/ -name "*.bin" -exec mv {} teste/ \;
 
-      - name: Commit e Push dos Arquivos
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add teste/
-          git commit -m "Atualização automática do firmware"
-          git push
+      - name: Commit e Push dos arquivos compilados
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: |
+    git config --global user.name "github-actions"
+    git config --global user.email "actions@github.com"
+    git add teste/
+    git commit -m "Adicionando firmware compilado automaticamente" || echo "Nenhuma mudança para commitar"
+    git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
