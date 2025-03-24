@@ -1,4 +1,4 @@
-name: copilot
+name: Copilot
 
 on:
   workflow_dispatch:
@@ -48,10 +48,16 @@ jobs:
     - name: Criar pasta de firmware compilado
       run: mkdir -p teste && cp .pio/build/*/*.bin teste/
 
+    - name: Atualizar repositório remoto antes de enviar alterações
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git pull --rebase https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git main || echo "Nenhuma atualização necessária"
+
     - name: Commit e Push das alterações
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git add teste/
         git commit -m "Atualização automática do firmware" || echo "Nada para commit"
-        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main --force
