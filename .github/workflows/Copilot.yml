@@ -1,4 +1,4 @@
-name: Atualizar Fork e Compilar Firmware
+name: copilot
 
 on:
   workflow_dispatch:
