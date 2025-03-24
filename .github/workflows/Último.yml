@@ -18,6 +18,9 @@ jobs:
       with:
         fetch-depth: 0  # Pega todas as versões para evitar conflitos
 
+   - name: Criar Backup do rf.cpp
+      run: cp src/modules/rf/rf.cpp rf_backup.cpp
+
     - name: Configurar Git
       run: |
         git config --global user.name "github-actions"
