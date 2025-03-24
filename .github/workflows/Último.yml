@@ -22,7 +22,7 @@ jobs:
         run: |
           git remote add upstream https://github.com/BRUCE-ORIGINAL/REPO.git
           git fetch upstream
-          git reset --hard upstream/main
+          git reset --hard upstream/main --allow-unrelated-histories
 
       - name: Restaurar rf.cpp do Fork
         run: mv rf_backup.cpp src/modules/rf/rf.cpp
