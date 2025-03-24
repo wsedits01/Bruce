@@ -66,7 +66,7 @@ jobs:
     - name: Build with PlatformIO for All Devices
       run: |
         platformio run -t clean
-        platformio run
+        platformio run 
 
     - name: Move binaries to 'teste' folder
       run: |
