@@ -1,0 +1,47 @@
+name: Build Bruce Firmware
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Roda 1x por dia
+  workflow_dispatch:  # Permite rodar manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar Código do Fork
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # Evita sobrescrever o fork
+
+      - name: Criar Backup do rf.cpp
+        run: cp src/rf.cpp rf_backup.cpp
+
+      - name: Baixar Últimas Atualizações do Bruce Original
+        run: |
+          git remote add upstream https://github.com/BRUCE-ORIGINAL/REPO.git
+          git fetch upstream
+          git reset --hard upstream/main
+
+      - name: Restaurar rf.cpp do Fork
+        run: mv rf_backup.cpp src/rf.cpp
+
+      - name: Instalar PlatformIO
+        run: pip install platformio
+
+      - name: Compilar Firmware
+        run: platformio run
+
+      - name: Mover Bins para Pasta "teste"
+        run: |
+          mkdir -p teste
+          find .pio/build/ -name "*.bin" -exec mv {} teste/ \;
+
+      - name: Commit e Push dos Arquivos
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add teste/
+          git commit -m "Atualização automática do firmware"
+          git push
