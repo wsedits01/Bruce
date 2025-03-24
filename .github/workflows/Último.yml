@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false  # Evita sobrescrever o fork
 
       - name: Criar Backup do rf.cpp
-        run: cp src/rf.cpp rf_backup.cpp
+        run: cp src/modules/rf/rf.cpp rf_backup.cpp
 
       - name: Baixar Últimas Atualizações do Bruce Original
         run: |
@@ -25,7 +25,7 @@ jobs:
           git reset --hard upstream/main
 
       - name: Restaurar rf.cpp do Fork
-        run: mv rf_backup.cpp src/rf.cpp
+        run: mv rf_backup.cpp src/modules/rf/rf.cpp
 
       - name: Instalar PlatformIO
         run: pip install platformio
