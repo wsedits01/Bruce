@@ -32,7 +32,7 @@ jobs:
         git stash push -m "Stash changes in rf.cpp" src/modules/rf/rf.cpp
 
     - name: Rebase onto upstream/main
-      run: git rebase upstream/main
+      run: git merge --no-edit upstream/main
 
     - name: Pop the stashed changes in rf.cpp
       run: |
