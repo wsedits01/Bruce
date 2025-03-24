@@ -25,7 +25,7 @@ jobs:
 
     - name: Adicionar repositório original e sincronizar com o fork
       run: |
-        git remote add upstream https://github.com/brucecoredev/Bruce.git
+        git remote add upstream https://github.com/pr3y/Bruce
         git fetch upstream
         git checkout main
         git rebase upstream/main
