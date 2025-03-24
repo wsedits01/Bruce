@@ -33,8 +33,8 @@ jobs:
         git checkout main
         git rebase upstream/main
 
-    - name: Restaurar `rf.cpp` para manter a versão modificada do fork
-      run: git checkout origin/main -- src/modules/rf/rf.cpp
+    - name: Restaurar o rf.cpp do Backup
+      run: mv rf_backup.cpp src/modules/rf/rf.cpp
 
     - name: Instalar PlatformIO
       run: pip install platformio
