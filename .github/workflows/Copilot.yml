@@ -43,7 +43,7 @@ jobs:
       run: pip install platformio
 
     - name: Compilar firmware
-      run: pio run
+      run: pio run -e lilygo-t-embed-cc1101
 
     - name: Criar pasta de firmware compilado
       run: mkdir -p teste && cp .pio/build/*/*.bin teste/
