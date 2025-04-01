@@ -277,18 +277,16 @@ void setMHZ(float frequency) {
     ELECHOUSE_cc1101.setMHZ(frequency);
 }
 
-void rf_jammerFull(
-) { //@IncursioHack - https://github.com/IncursioHack -  thanks @EversonPereira - rfcardputer
-    // init rf module
+void rf_jammerFull() { 
     int nTransmitterPin = bruceConfig.rfTx;
-    if (!initRfModule("tx")) return;
-    if (bruceConfig.rfModule == CC1101_SPI_MODULE) { // CC1101 in use
+    if(!initRfModule("tx")) return;
+    if(bruceConfig.rfModule == CC1101_SPI_MODULE) { 
         nTransmitterPin = bruceConfig.CC1101_bus.io0;
     }
 
     tft.fillScreen(bruceConfig.bgColor);
     drawMainBorder();
-    tft.setCursor(10, 30);
+    tft.setCursor(10,30);
     tft.setTextSize(FP);
     padprintln("RF - Jammer Full");
     tft.println("");
@@ -296,10 +294,9 @@ void rf_jammerFull(
     tft.setTextSize(FP);
     sendRF = true;
     digitalWrite(nTransmitterPin, HIGH); // Turn on Jammer
-    int tmr0 = millis();                 // control total jammer time;
     padprintln("Sending... Press ESC to stop.");
     while (sendRF) {
-        if (check(EscPress) || (millis() - tmr0 > 20000)) {
+        if (check(EscPress)) { // Removido o timer de 20 segundos
             sendRF = false;
             returnToMenu = true;
             break;
